@@ -1,10 +1,12 @@
-package com.rosarycollege.teachbyvoice;
+package com.rosarycollege.utility;
 
 import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.util.AttributeSet;
 
 import androidx.appcompat.content.res.AppCompatResources;
+
+import com.rosarycollege.teachbyvoice.R;
 
 public class PlayToPauseMorphingImageView extends androidx.appcompat.widget.AppCompatImageView {
 
