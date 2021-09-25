@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "123623734702",
+    "project_id": "teach-by-voice-51f86",
+    "storage_bucket": "teach-by-voice-51f86.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123623734702:android:a7af3dacdd150a9d791c3f",
+        "android_client_info": {
+          "package_name": "com.rosarycollege.teachbyvoice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123623734702-brn97qds95dmdgf8ccubdvlqr8jrsjhb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGLokFby1RMxK0YxogJ2vR1-j5CFxpwQU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123623734702-brn97qds95dmdgf8ccubdvlqr8jrsjhb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
