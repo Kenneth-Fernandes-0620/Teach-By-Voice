@@ -16,73 +16,72 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment {
-
+    private View view;
+    private final String storageBucketReference = "gs://teach-by-voice-51f86.appspot.com";
     private static final String TAG = "HomeFragment";
-    private View thisView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        thisView = inflater.inflate(R.layout.fragment_home, container, false);
-        return thisView;
+        view = inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (FirebaseAuth.getInstance().getCurrentUser() == null)
-            signin();
-        else displayData();
-    }
-
-    private void displayData() {
-        ArrayList<String> s = new ArrayList<>();
-        getDataFromServer();
-        s.add("Hello");
-        s.add("world");
-        initRecyclerView(s);
+            signIn();
+        else asynchronousGetDataLoadingFromServer();
     }
 
     private void getDataFromLocal() {
         Source source = Source.CACHE;
     }
-
-
-    private void getDataFromServer() {
+    private void asynchronousGetDataLoadingFromServer() {
         try {
-            String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
-            if(email == null)
-                throw new NullPointerException();
-            FirebaseFirestore.getInstance().collection("Users").document(email)
+            FirebaseFirestore.getInstance().collection("users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            for (Map.Entry<String, Object> result : Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getData()).entrySet())
-                                Log.d(TAG, " " + result.getKey() + " : " + result.getValue());
+                            loadCollegeFiles((String)Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getData()).get("collegeId")));
                         } else
-                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Log.d(TAG, "Error getting documents.", task.getException());
                     });
         } catch (NullPointerException np) {
             Log.d(TAG, "getDataFromServer: "+ np);
         }
     }
 
-    public void signin() {
-        Navigation.findNavController(thisView).navigate(R.id.loginFragment);
+
+    public void loadCollegeFiles(String s){
+        FirebaseStorage.getInstance(storageBucketReference).getReference().child("test_college")
+                .listAll().addOnSuccessListener(listResult -> {
+                    ArrayList<String> sl = new ArrayList<>();
+                    sl.add("Hello");
+                    sl.add("world");
+                    initRecyclerView(sl,listResult.getItems());
+                });
     }
 
-    private void initRecyclerView(ArrayList<String> list) {
+    public void signIn() {
+        Navigation.findNavController(view).navigate(R.id.loginFragment);
+    }
+
+    private void initRecyclerView(ArrayList<String> list, List<StorageReference> itemList) {
         Log.d(TAG, "initRecyclerView:");
-        RecyclerView recyclerView = thisView.findViewById(R.id.RecyclerView);
-        recyclerViewAdapter adapter = new recyclerViewAdapter(list);
+        RecyclerView recyclerView = view.findViewById(R.id.RecyclerView);
+        recyclerViewAdapter adapter = new recyclerViewAdapter(list, itemList);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(thisView.getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
 }

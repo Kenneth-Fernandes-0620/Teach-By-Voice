@@ -1,5 +1,6 @@
 package com.rosarycollege.teachbyvoice;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.storage.StorageReference;
+import com.rosarycollege.utility.PlayToPauseMorphingImageView;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapter.Viewholder>{
     private final ArrayList<String> itemName;
+    private final List<StorageReference> itemList;
 
-    public recyclerViewAdapter(ArrayList<String> itemName) {
+    private static final String TAG = "recycleViewAdapter";
+
+    public recyclerViewAdapter(ArrayList<String> itemName,List<StorageReference> itemList) {
+        Log.d(TAG, "constructor ");
+
         this.itemName = itemName;
+        this.itemList = itemList;
+        for(StorageReference ref: itemList)
+            Log.d(TAG, "constructor: "+ref);
     }
+
 
     @NonNull
     @Override
@@ -39,13 +53,13 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
     public static class Viewholder extends RecyclerView.ViewHolder {
         RelativeLayout recycleViewLayout;
         TextView text;
-        PlayToPauseMorphingImageView mArrowToCheckMarkImageView;
+        PlayToPauseMorphingImageView playToPauseImageView;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.Title);
-            mArrowToCheckMarkImageView = itemView.findViewById(R.id.imageView);
-            mArrowToCheckMarkImageView.setOnClickListener(view -> mArrowToCheckMarkImageView.morph());
+            playToPauseImageView = itemView.findViewById(R.id.imageView);
+            playToPauseImageView.setOnClickListener(view -> playToPauseImageView.morph());
             recycleViewLayout = itemView.findViewById(R.id.parent_Item);
         }
     }
