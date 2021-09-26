@@ -1,28 +1,28 @@
 package com.rosarycollege.teachbyvoice;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
-import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
+import com.rosarycollege.utility.MediaPlayer;
 
 public class MainActivity extends AppCompatActivity {
+
+    static com.rosarycollege.utility.MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        player = new MediaPlayer();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    public static MediaPlayer getPlayer(){
+        return player;
     }
 }

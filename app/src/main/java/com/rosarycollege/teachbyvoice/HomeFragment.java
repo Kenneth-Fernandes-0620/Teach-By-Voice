@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.rosarycollege.utility.recyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,8 +65,10 @@ public class HomeFragment extends Fragment {
 
 
     public void loadCollegeFiles(String s){
-        FirebaseStorage.getInstance(storageBucketReference).getReference().child("test_college")
+        FirebaseStorage.getInstance(storageBucketReference).getReference().child(s)
                 .listAll().addOnSuccessListener(listResult -> {
+                    for(StorageReference ref: listResult.getItems())
+                        Log.d(TAG, "loadCollegeFiles: "+ref);
                     ArrayList<String> sl = new ArrayList<>();
                     sl.add("Hello");
                     sl.add("world");

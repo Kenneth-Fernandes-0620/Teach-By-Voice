@@ -1,4 +1,4 @@
-package com.rosarycollege.teachbyvoice;
+package com.rosarycollege.utility;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.storage.StorageReference;
-import com.rosarycollege.utility.PlayToPauseMorphingImageView;
+import com.rosarycollege.teachbyvoice.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,6 @@ import java.util.List;
 public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapter.Viewholder>{
     private final ArrayList<String> itemName;
     private final List<StorageReference> itemList;
-
     private static final String TAG = "recycleViewAdapter";
 
     public recyclerViewAdapter(ArrayList<String> itemName,List<StorageReference> itemList) {
@@ -27,6 +26,7 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
 
         this.itemName = itemName;
         this.itemList = itemList;
+
         for(StorageReference ref: itemList)
             Log.d(TAG, "constructor: "+ref);
     }
@@ -41,13 +41,16 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-        if (itemName.size() > position)
-            holder.text.setText(itemName.get(position));
+        Log.d(TAG, "onBindViewHolder: Inside");
+        if (itemList.size() > position){
+            holder.text.setText(itemList.get(position).getName());
+            holder.playToPauseImageView.setLink(itemList.get(position).getDownloadUrl());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return itemName.size();
+        return itemList.size();
     }
 
     public static class Viewholder extends RecyclerView.ViewHolder {
