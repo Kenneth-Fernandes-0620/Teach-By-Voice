@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -57,6 +58,7 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
         RelativeLayout recycleViewLayout;
         TextView text;
         PlayToPauseMorphingImageView playToPauseImageView;
+
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);

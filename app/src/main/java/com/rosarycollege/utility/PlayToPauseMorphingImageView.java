@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.content.res.AppCompatResources;
 

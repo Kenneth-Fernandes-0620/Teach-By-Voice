@@ -18,5 +18,6 @@
     <!-- Content Description Strings-->
     <string name="play_and_pause_button">Play and Pause</string>
     <string name="download">Download Button</string>
+    <string name="exit">Exit</string>
 
 </resources>

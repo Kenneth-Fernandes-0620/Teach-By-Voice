@@ -5,6 +5,19 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
+    <color name="primaryColor">#ef9a9a</color>
+    <color name="primaryLightColor">#ffcccb</color>
+    <color name="primaryDarkColor">#ba6b6c</color>
+    <color name="primaryTextColor">#000000</color>
+
+    <color name="Beau_Blue">#C1E0F7</color>
+    <color name="Uranium_Blue">#A4DEF9</color>
+    <color name="Electric_Blue">#97F9F9</color>
+    <color name="Thistle">#CFBAE1</color>
+    <color name="lilac">#CAA8CE</color>
+    <color name="Lilac">#C59FC9</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="material_base">#FF212121</color>

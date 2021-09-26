@@ -24,21 +24,6 @@
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="200dp"
-        android:layout_height="15dp"
-        android:layout_below="@+id/Title"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="0dp"
-        android:layout_toStartOf="@+id/imageView"
-        android:max="100" />
-
     <ImageView
         android:id="@+id/downloadAudioButton"
         android:layout_width="50dp"
