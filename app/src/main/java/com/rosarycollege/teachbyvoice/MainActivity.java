@@ -11,7 +11,7 @@ import com.rosarycollege.utility.MediaPlayer;
 
 public class MainActivity extends AppCompatActivity {
 
-    static com.rosarycollege.utility.MediaPlayer player;
+    public com.rosarycollege.utility.MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,13 +19,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar bar = findViewById(R.id.customtoolbar);
         setSupportActionBar(bar);
-        player = new MediaPlayer();
+        player = new MediaPlayer(getApplicationContext());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toolbar_menu,menu);
+        inflater.inflate(R.menu.toolbar_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -34,7 +34,16 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    public static MediaPlayer getPlayer(){
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (player.isPlaying())
+            player.stop();
+        player.reset();
+        player.release();
+    }
+
+    public MediaPlayer getPlayer() {
         return player;
     }
 }

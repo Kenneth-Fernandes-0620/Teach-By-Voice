@@ -48,7 +48,10 @@ public class HomeFragment extends Fragment {
         Source source = Source.CACHE;
     }
 
+
     private void asynchronousGetDataLoadingFromServer() {
+
+
         try {
             FirebaseFirestore.getInstance().collection("users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                     .get()
@@ -77,7 +80,7 @@ public class HomeFragment extends Fragment {
     private void initRecyclerView(List<StorageReference> itemList) {
         Log.d(TAG, "initRecyclerView:");
         RecyclerView recyclerView = view.findViewById(R.id.RecyclerView);
-        recyclerViewAdapter adapter = new recyclerViewAdapter(itemList);
+        recyclerViewAdapter adapter = new recyclerViewAdapter(itemList, ((MainActivity) getActivity()).getPlayer());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }

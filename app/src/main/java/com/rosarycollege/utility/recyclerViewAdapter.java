@@ -1,10 +1,8 @@
 package com.rosarycollege.utility;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,9 +16,10 @@ import java.util.List;
 
 public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapter.Viewholder> {
     private final List<StorageReference> itemList;
-    private static final String TAG = "recycleViewAdapter";
-    public recyclerViewAdapter(List<StorageReference> itemList) {
+    private final MediaPlayer player;
+    public recyclerViewAdapter(List<StorageReference> itemList, MediaPlayer player) {
         this.itemList = itemList;
+        this.player = player;
     }
 
 
@@ -33,16 +32,13 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: Inside");
         if (itemList.size() > position) {
             holder.text.setText(itemList.get(position).getName());
             File f = (holder.downloadToCancelMorphingImageView.setReference(itemList.get(position)));
             if (!f.exists()) {
-                holder.playToPauseImageView.setLink(itemList.get(position).getDownloadUrl(), 0);
-                Log.d(TAG, "onBindViewHolder: File Does Not Exist");
+                holder.playToPauseImageView.setLink(itemList.get(position).getDownloadUrl(), 0,position,player);
             } else {
-                holder.playToPauseImageView.setLink(f, 1);
-                Log.d(TAG, "onBindViewHolder: File Exists");
+                holder.playToPauseImageView.setLink(f, 1,position,player);
             }
         }
     }
@@ -53,7 +49,7 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
     }
 
     public static class Viewholder extends RecyclerView.ViewHolder {
-        RelativeLayout recycleViewLayout;
+//        RelativeLayout recycleViewLayout;
         TextView text;
         PlayToPauseMorphingImageView playToPauseImageView;
         DownloadToCancelMorphingImageView downloadToCancelMorphingImageView;
@@ -65,7 +61,7 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
             downloadToCancelMorphingImageView = itemView.findViewById(R.id.DownloadMorphingView);
             playToPauseImageView.setOnClickListener(view -> playToPauseImageView.morph());
             downloadToCancelMorphingImageView.setOnClickListener(view -> downloadToCancelMorphingImageView.morph());
-            recycleViewLayout = itemView.findViewById(R.id.parent_Item);
+//            recycleViewLayout = itemView.findViewById(R.id.parent_Item);
         }
     }
 }

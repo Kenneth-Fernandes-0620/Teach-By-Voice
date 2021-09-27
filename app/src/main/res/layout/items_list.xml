@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_Item"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:layout_margin="5dp"
+    android:layout_margin="1dp"
     android:background="@drawable/roundedbackground"
     android:backgroundTint="?attr/colorPrimary"
     android:elevation="5dp"
     android:outlineProvider="none"
     android:padding="10dp"
     android:textAlignment="center">
+
 
     <TextView
         android:id="@+id/Title"
@@ -19,26 +21,40 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:maxWidth="300dp"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
 
-
     <com.rosarycollege.utility.DownloadToCancelMorphingImageView
         android:id="@+id/DownloadMorphingView"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="15dp"
-        android:layout_toStartOf="@+id/imageView" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="290dp" />
 
     <com.rosarycollege.utility.PlayToPauseMorphingImageView
         android:id="@+id/imageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="5dp" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="343dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="263dp"
+        android:layout_height="25dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="0dp" />
 
 </RelativeLayout>
