@@ -3,6 +3,7 @@ package com.rosarycollege.utility;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,11 +18,11 @@ import java.util.List;
 public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapter.Viewholder> {
     private final List<StorageReference> itemList;
     private final MediaPlayer player;
+
     public recyclerViewAdapter(List<StorageReference> itemList, MediaPlayer player) {
         this.itemList = itemList;
         this.player = player;
     }
-
 
     @NonNull
     @Override
@@ -36,9 +37,9 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
             holder.text.setText(itemList.get(position).getName());
             File f = (holder.downloadToCancelMorphingImageView.setReference(itemList.get(position)));
             if (!f.exists()) {
-                holder.playToPauseImageView.setLink(itemList.get(position).getDownloadUrl(), 0,position,player);
+                holder.playToPauseImageView.setLink(itemList.get(position).getDownloadUrl(), 0, position, player);
             } else {
-                holder.playToPauseImageView.setLink(f, 1,position,player);
+                holder.playToPauseImageView.setLink(f, 1, position, player);
             }
         }
     }
@@ -49,19 +50,19 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
     }
 
     public static class Viewholder extends RecyclerView.ViewHolder {
-//        RelativeLayout recycleViewLayout;
         TextView text;
         PlayToPauseMorphingImageView playToPauseImageView;
         DownloadToCancelMorphingImageView downloadToCancelMorphingImageView;
+        ProgressBar progressBar;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.Title);
             playToPauseImageView = itemView.findViewById(R.id.imageView);
             downloadToCancelMorphingImageView = itemView.findViewById(R.id.DownloadMorphingView);
+            progressBar = itemView.findViewById(R.id.progressBar);
             playToPauseImageView.setOnClickListener(view -> playToPauseImageView.morph());
-            downloadToCancelMorphingImageView.setOnClickListener(view -> downloadToCancelMorphingImageView.morph());
-//            recycleViewLayout = itemView.findViewById(R.id.parent_Item);
+            downloadToCancelMorphingImageView.setOnClickListener(view -> downloadToCancelMorphingImageView.morph(progressBar));
         }
     }
 }

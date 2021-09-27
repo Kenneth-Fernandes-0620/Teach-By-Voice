@@ -1,7 +1,8 @@
 package com.rosarycollege.utility;
 
 import android.content.Context;
-import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.firebase.storage.StorageReference;
 
@@ -16,18 +17,19 @@ public class DownloadAssets {
         mediaDirectory = context.getDir("media", Context.MODE_PRIVATE);
     }
 
-    void download(StorageReference reference, DownloadToCancelMorphingImageView downloadToCancelMorphingImageView) {
+    void download(StorageReference reference, DownloadToCancelMorphingImageView downloadToCancelMorphingImageView, ProgressBar bar) {
         try {
             File fileWithinMyDir = new File(mediaDirectory, reference.getName());
             fileWithinMyDir.createNewFile();
+            bar.setVisibility(View.VISIBLE);
             reference.getFile(fileWithinMyDir)
                     .addOnSuccessListener(taskSnapshot -> {
                         // make the download button green after complete
                         downloadToCancelMorphingImageView.morphToComplete();
-                    }).addOnProgressListener(snapshot -> {
-                        double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                        Log.d(TAG, "download: "+progress);
-                    });
+                        bar.setVisibility(View.INVISIBLE);
+                    }).addOnProgressListener(snapshot ->
+                        bar.setProgress((int) ((100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount()),true)
+                    );
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.util.AttributeSet;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -59,13 +60,13 @@ public class DownloadToCancelMorphingImageView extends androidx.appcompat.widget
         return file;
     }
 
-    public void morph() {
+    public void morph(ProgressBar bar) {
         if(!exists) {
             final AnimatedVectorDrawable drawable = mIsShowingCancelButton ? cancelToDownload : downloadToCancel;
             setImageDrawable(drawable);
             drawable.start();
             mIsShowingCancelButton = !mIsShowingCancelButton;
-            new DownloadAssets(context).download(reference, this);
+            new DownloadAssets(context).download(reference, this,bar);
         }
     }
 
