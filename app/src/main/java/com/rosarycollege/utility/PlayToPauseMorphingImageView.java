@@ -2,22 +2,17 @@ package com.rosarycollege.utility;
 
 import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import androidx.appcompat.content.res.AppCompatResources;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.rosarycollege.teachbyvoice.MainActivity;
 import com.rosarycollege.teachbyvoice.R;
 
-import java.io.IOException;
+import java.io.File;
 
 public class PlayToPauseMorphingImageView extends androidx.appcompat.widget.AppCompatImageView {
 
@@ -26,6 +21,8 @@ public class PlayToPauseMorphingImageView extends androidx.appcompat.widget.AppC
     private boolean mIsShowingPauseButton;
     private com.rosarycollege.utility.MediaPlayer mediaPlayer;
     private Uri link;
+    private File file;
+    private int storageState;
 
     public PlayToPauseMorphingImageView(Context context) {
         super(context);
@@ -42,6 +39,10 @@ public class PlayToPauseMorphingImageView extends androidx.appcompat.widget.AppC
         init(context);
     }
 
+    public PlayToPauseMorphingImageView getObject(){
+        return this;
+    }
+
     public void init(Context context) {
         mIsShowingPauseButton = false;
         mediaPlayer = MainActivity.getPlayer();
@@ -52,17 +53,26 @@ public class PlayToPauseMorphingImageView extends androidx.appcompat.widget.AppC
         setImageDrawable(playToPause);
     }
 
-    public void setLink(Task<Uri> link){
-        Log.d("PlayToPause", "setLink: "+link);
+
+    public void setLink(Task<Uri> link, int State) {
+        this.storageState = State;
+        Log.d("PlayToPause", "setReference: " + link);
         link.addOnSuccessListener(uri -> this.link = uri);
     }
 
+    public void setLink(File file, int State) {
+        this.storageState = State;
+        this.file = file;
+    }
 
     public void morph() {
         final AnimatedVectorDrawable drawable = mIsShowingPauseButton ? pauseToPlay : playToPause;
         setImageDrawable(drawable);
         drawable.start();
-        mediaPlayer.controlMediaPlayer(this.link);
+        if (storageState == 0)
+            mediaPlayer.controlMediaPlayer(this.link);
+        else
+            mediaPlayer.controlMediaPlayer(getContext(), this.file);
         mIsShowingPauseButton = !mIsShowingPauseButton;
     }
 }

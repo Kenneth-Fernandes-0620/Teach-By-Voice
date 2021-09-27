@@ -20,7 +20,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.rosarycollege.utility.recyclerViewAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,42 +47,37 @@ public class HomeFragment extends Fragment {
     private void getDataFromLocal() {
         Source source = Source.CACHE;
     }
+
     private void asynchronousGetDataLoadingFromServer() {
         try {
             FirebaseFirestore.getInstance().collection("users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            loadCollegeFiles((String)Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getData()).get("collegeId")));
+                            loadCollegeFiles((String) Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getData()).get("collegeId")));
                         } else
                             Log.d(TAG, "Error getting documents.", task.getException());
                     });
         } catch (NullPointerException np) {
-            Log.d(TAG, "getDataFromServer: "+ np);
+            Log.d(TAG, "getDataFromServer: " + np);
         }
     }
 
 
-    public void loadCollegeFiles(String s){
+    public void loadCollegeFiles(String s) {
         FirebaseStorage.getInstance(storageBucketReference).getReference().child(s)
-                .listAll().addOnSuccessListener(listResult -> {
-                    for(StorageReference ref: listResult.getItems())
-                        Log.d(TAG, "loadCollegeFiles: "+ref);
-                    ArrayList<String> sl = new ArrayList<>();
-                    sl.add("Hello");
-                    sl.add("world");
-                    initRecyclerView(sl,listResult.getItems());
-                });
+                .listAll().addOnSuccessListener(listResult ->
+                initRecyclerView(listResult.getItems()));
     }
 
     public void signIn() {
         Navigation.findNavController(view).navigate(R.id.loginFragment);
     }
 
-    private void initRecyclerView(ArrayList<String> list, List<StorageReference> itemList) {
+    private void initRecyclerView(List<StorageReference> itemList) {
         Log.d(TAG, "initRecyclerView:");
         RecyclerView recyclerView = view.findViewById(R.id.RecyclerView);
-        recyclerViewAdapter adapter = new recyclerViewAdapter(list, itemList);
+        recyclerViewAdapter adapter = new recyclerViewAdapter(itemList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }

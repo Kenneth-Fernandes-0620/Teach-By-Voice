@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/downloadaudio">
+
+    <target
+        android:name="download"
+        android:animation="@animator/from_download_to_cancel_animator" />
+</animated-vector>
