@@ -28,6 +28,7 @@ public class MediaPlayer extends android.media.MediaPlayer {
             Log.d(TAG, "onError: " + i + "" + i1);
             return false;
         });
+        player.setOnCompletionListener(mediaPlayer ->this.currentRefs.pauseMorph());
         this.context = context;
 //        player.setOnErrorListener(err-> Toast.makeText());
         currentRefs = new PlayToPauseMorphingImageView(context);

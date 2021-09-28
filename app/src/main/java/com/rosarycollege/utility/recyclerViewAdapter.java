@@ -16,13 +16,23 @@ import java.io.File;
 import java.util.List;
 
 public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapter.Viewholder> {
-    private final List<StorageReference> itemList;
+    private List<StorageReference> itemList;
     private final MediaPlayer player;
 
     public recyclerViewAdapter(List<StorageReference> itemList, MediaPlayer player) {
         this.itemList = itemList;
         this.player = player;
     }
+
+    public void refreshData(List<StorageReference> itemList, int changeStart, int changeEnd){
+        this.itemList = itemList;
+        if (player.isPlaying())
+            player.stop();
+        player.reset();
+        player.release();
+        this.notifyItemRangeInserted(changeStart,changeEnd);
+    }
+
 
     @NonNull
     @Override
@@ -48,6 +58,7 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
     public int getItemCount() {
         return itemList.size();
     }
+
 
     public static class Viewholder extends RecyclerView.ViewHolder {
         TextView text;

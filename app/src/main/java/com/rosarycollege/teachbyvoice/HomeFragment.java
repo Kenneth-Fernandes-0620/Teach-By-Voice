@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,12 +28,17 @@ public class HomeFragment extends Fragment {
     private View view;
     private final String storageBucketReference = "gs://teach-by-voice-51f86.appspot.com";
     private static final String TAG = "HomeFragment";
+    private SwipeRefreshLayout refreshLayout;
+    private String collegeId;
+    private long items;
+    private recyclerViewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
         return view;
     }
 
@@ -44,20 +50,20 @@ public class HomeFragment extends Fragment {
         else asynchronousGetDataLoadingFromServer();
     }
 
+
     private void getDataFromLocal() {
         Source source = Source.CACHE;
     }
 
 
     private void asynchronousGetDataLoadingFromServer() {
-
-
         try {
             FirebaseFirestore.getInstance().collection("users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            loadCollegeFiles((String) Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getData()).get("collegeId")));
+                            collegeId = (String) Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getData()).get("collegeId"));
+                            loadCollegeFiles();
                         } else
                             Log.d(TAG, "Error getting documents.", task.getException());
                     });
@@ -67,10 +73,28 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public void loadCollegeFiles(String s) {
-        FirebaseStorage.getInstance(storageBucketReference).getReference().child(s)
-                .listAll().addOnSuccessListener(listResult ->
-                initRecyclerView(listResult.getItems()));
+    public void loadCollegeFiles() {
+        FirebaseStorage.getInstance(storageBucketReference).getReference().child(collegeId)
+                .listAll().addOnSuccessListener(listResult -> {
+            List<StorageReference> itemList = listResult.getItems();
+            this.items = itemList.size();
+            initRecyclerView(itemList);
+        });
+    }
+
+    public void getCollegeFilesList() {
+        FirebaseStorage.getInstance(storageBucketReference).getReference().child(collegeId)
+                .listAll().addOnSuccessListener(listResult -> {
+            long count = listResult.getItems().size();
+            refreshLayout.setRefreshing(false);
+            Log.d(TAG, "getCollegeFilesList new: " + count);
+            Log.d(TAG, "getCollegeFilesList initial: " + items);
+            if (count > items) {
+                adapter.refreshData(listResult.getItems(),(int)items,(int)count-1);
+                items = count;
+            }
+        }).addOnFailureListener(e -> refreshLayout.setRefreshing(false));
+
     }
 
     public void signIn() {
@@ -80,8 +104,9 @@ public class HomeFragment extends Fragment {
     private void initRecyclerView(List<StorageReference> itemList) {
         Log.d(TAG, "initRecyclerView:");
         RecyclerView recyclerView = view.findViewById(R.id.RecyclerView);
-        recyclerViewAdapter adapter = new recyclerViewAdapter(itemList, ((MainActivity) getActivity()).getPlayer());
+        adapter = new recyclerViewAdapter(itemList, ((MainActivity) requireActivity()).getPlayer());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        refreshLayout.setOnRefreshListener(this::getCollegeFilesList);
     }
 }
